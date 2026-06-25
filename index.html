@@ -13,7 +13,40 @@
 <meta property="og:description" content="Product photography, social media marketing, and videography for brands that want to stand out."/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://picsum.photos/seed/shahzaibog/1200/630"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="Shahzaib Rafique — creative marketer and visual storyteller"/>
+<!-- REPLACE og:url + canonical with the live domain when deployed -->
+<meta property="og:url" content="https://example.com/"/>
+<link rel="canonical" href="https://example.com/"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Shahzaib Rafique | Creative Marketer &amp; Visual Storyteller"/>
+<meta name="twitter:description" content="Product photography, social media marketing, and videography for brands that want to stand out."/>
+<meta name="twitter:image" content="https://picsum.photos/seed/shahzaibog/1200/630"/>
 <meta name="theme-color" content="#0058be"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Shahzaib Rafique",
+  "jobTitle": "Creative Marketer & Visual Storyteller",
+  "description": "Product photography, social media marketing, and videography that helps brands look good and sell more.",
+  "url": "https://example.com/",
+  "email": "shahzaibrafique671@gmail.com",
+  "telephone": "+923074743714",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Lahore",
+    "addressRegion": "Punjab",
+    "addressCountry": "PK"
+  },
+  "knowsAbout": ["Product Photography", "Social Media Marketing", "Videography", "Brand Strategy"],
+  "sameAs": [
+    "https://www.instagram.com/i_em_shahzaib_06",
+    "https://pk.linkedin.com/in/shahzaib-rafique-34303435b"
+  ]
+}
+</script>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
@@ -135,27 +168,30 @@
 </head>
 <body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container">
 
+<!-- Skip link: lets keyboard/screen-reader users jump past the nav -->
+<a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:top-4 focus:left-4 focus:bg-primary focus:text-on-primary focus:px-4 focus:py-2 focus:rounded font-label-caps text-label-caps uppercase tracking-widest">Skip to content</a>
+
 <!-- ================= TOP NAV ================= -->
 <header class="bg-surface/90 dark:bg-surface-container-lowest/90 border-b border-outline-variant/30 backdrop-blur-md top-0 sticky z-50 transition-all duration-300">
 <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
 <a class="font-headline-sm text-headline-sm font-bold text-primary dark:text-on-surface tracking-tight hover:opacity-80 transition-opacity" href="#">Shahzaib Rafique</a>
 <nav class="hidden md:flex gap-8 items-center">
-<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low/50 px-3 py-2 rounded" href="#services">Services</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low/50 px-3 py-2 rounded" href="#about">About</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low/50 px-3 py-2 rounded" href="#contact">Contact</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low/50 px-3 py-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary" href="#services">Services</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low/50 px-3 py-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary" href="#about">About</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low/50 px-3 py-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary" href="#contact">Contact</a>
 </nav>
 <div class="flex items-center gap-4">
-<a class="hidden md:flex bg-secondary-container text-on-secondary-container px-6 py-2 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-secondary transition-colors items-center gap-2 group" href="https://wa.me/923074743714">
+<a class="hidden md:flex bg-secondary-container text-on-secondary-container px-6 py-2 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-secondary transition-colors items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-secondary" href="https://wa.me/923074743714">
                     Hire Me
                     <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </a>
-<button id="menu-toggle" aria-label="Open menu" aria-expanded="false" class="md:hidden text-on-surface p-2">
+<button id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden text-on-surface p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary">
 <span class="material-symbols-outlined" id="menu-icon">menu</span>
 </button>
 </div>
 </div>
 <!-- Mobile dropdown menu (toggled by JS) -->
-<nav id="mobile-menu" class="md:hidden absolute top-full left-0 w-full bg-surface px-margin-mobile py-4 shadow-lg border-b border-outline-variant/30 z-40">
+<nav id="mobile-menu" inert class="md:hidden absolute top-full left-0 w-full bg-surface px-margin-mobile py-4 shadow-lg border-b border-outline-variant/30 z-40">
 <a class="block py-3 text-on-surface-variant hover:text-primary font-label-caps text-label-caps uppercase tracking-widest" href="#services">Services</a>
 <a class="block py-3 text-on-surface-variant hover:text-primary font-label-caps text-label-caps uppercase tracking-widest" href="#about">About</a>
 <a class="block py-3 text-on-surface-variant hover:text-primary font-label-caps text-label-caps uppercase tracking-widest" href="#contact">Contact</a>
@@ -163,15 +199,15 @@
 </nav>
 </header>
 
-<main>
+<main id="main">
 <!-- ================= HERO ================= -->
-<section class="pt-24 md:pt-stack-xl pb-stack-md md:pb-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-12 md:min-h-[819px]">
+<section aria-labelledby="hero-heading" class="pt-12 md:pt-16 pb-stack-md md:pb-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-12">
 <div class="flex-1 space-y-stack-sm md:pr-12 order-2 md:order-1">
 <div class="inline-flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded-full mb-4">
 <span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
 <span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Available for freelance</span>
 </div>
-<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-primary">
+<h1 id="hero-heading" class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-primary">
                     Shahzaib Rafique: <span class="text-outline">Visual Storyteller &amp; Creative Marketer</span>
 </h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-6">
@@ -181,11 +217,11 @@
                     Helping brands look good and sell more through conversion-focused visual content. Based in Lahore, Pakistan.
                 </p>
 <div class="flex flex-col sm:flex-row gap-4 pt-8">
-<a class="bg-primary text-on-primary px-8 py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-inverse-surface transition-colors text-center inline-flex justify-center items-center gap-2" href="https://wa.me/923074743714">
+<a class="bg-primary text-on-primary px-8 py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-inverse-surface transition-colors text-center inline-flex justify-center items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-secondary" href="https://wa.me/923074743714">
                         Message on WhatsApp
                         <span class="material-symbols-outlined text-[18px]">chat</span>
 </a>
-<a class="border border-primary text-primary px-8 py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low transition-colors text-center inline-flex justify-center items-center gap-2" href="#services">
+<a class="border border-primary text-primary px-8 py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container-low transition-colors text-center inline-flex justify-center items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-secondary" href="#services">
                         See What I Offer
                         <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
 </a>
@@ -195,17 +231,17 @@
 <div class="aspect-[4/5] rounded-xl overflow-hidden relative group">
 <div class="absolute inset-0 bg-primary/10 mix-blend-overlay z-10 transition-opacity group-hover:opacity-0"></div>
 <!-- REPLACE: hero photo of Shahzaib (camera / studio shot). Recommended size ~800x1000. -->
-<img alt="Shahzaib Rafique, creative marketer and photographer at work" class="object-cover w-full h-full scale-105 group-hover:scale-100 transition-transform duration-700 ease-out" src="shahzaib.png"/>
+<img alt="Shahzaib Rafique, creative marketer and photographer at work" class="object-cover w-full h-full" src="shahzaib.png"/>
 </div>
 </div>
 </section>
 
 <!-- ================= SERVICES ================= -->
-<section class="py-20 md:py-stack-xl bg-surface px-margin-mobile md:px-margin-desktop" id="services">
+<section aria-labelledby="services-heading" class="py-20 md:py-stack-xl bg-surface px-margin-mobile md:px-margin-desktop" id="services">
 <div class="max-w-container-max mx-auto">
 <div class="mb-stack-md flex flex-col md:flex-row justify-between items-end gap-6 border-b border-outline-variant/30 pb-6">
 <div>
-<h2 class="font-headline-md text-headline-md text-primary">What I Do</h2>
+<h2 id="services-heading" class="font-headline-md text-headline-md text-primary">What I Do</h2>
 <p class="font-body-md text-body-md text-on-surface-variant mt-2">Strategic visual services designed to elevate your brand.</p>
 </div>
 </div>
@@ -240,7 +276,7 @@
 
 
 <!-- ================= ABOUT ================= -->
-<section class="py-20 md:py-stack-xl px-margin-mobile md:px-margin-desktop bg-surface" id="about">
+<section aria-labelledby="about-heading" class="py-20 md:py-stack-xl px-margin-mobile md:px-margin-desktop bg-surface" id="about">
 <div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-stack-md md:gap-stack-lg items-center">
 <div class="relative">
 <div class="aspect-[3/4] rounded-lg overflow-hidden relative group">
@@ -251,7 +287,7 @@
 <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary-container/10 rounded-full blur-2xl -z-10"></div>
 </div>
 <div class="space-y-stack-sm">
-<h2 class="font-headline-md text-headline-md text-primary">About Me</h2>
+<h2 id="about-heading" class="font-headline-md text-headline-md text-primary">About Me</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant font-medium leading-relaxed border-l-2 border-secondary pl-6">
                         Creative marketer blending marketing strategy with visual craft — a BBA Marketing student at the University of Central Punjab (UCP).
                     </p>
@@ -284,12 +320,12 @@
 </section>
 
 <!-- ================= CONTACT ================= -->
-<section class="py-20 md:py-stack-xl px-margin-mobile md:px-margin-desktop bg-surface-container-lowest border-t border-outline-variant/20" id="contact">
+<section aria-labelledby="contact-heading" class="py-20 md:py-stack-xl px-margin-mobile md:px-margin-desktop bg-surface-container-lowest border-t border-outline-variant/20" id="contact">
 <div class="max-w-container-max mx-auto">
 <div class="grid grid-cols-1 md:grid-cols-12 gap-stack-md">
 <div class="md:col-span-5 space-y-8">
 <div>
-<h2 class="font-headline-md text-headline-md text-primary mb-4">Let's Work Together</h2>
+<h2 id="contact-heading" class="font-headline-md text-headline-md text-primary mb-4">Let's Work Together</h2>
 <p class="font-body-md text-body-md text-on-surface-variant">Ready to elevate your brand's visual presence? Get in touch to discuss your next project.</p>
 </div>
 <div class="space-y-6 pt-4">
@@ -298,7 +334,7 @@
 <span class="material-symbols-outlined">call</span>
 </div>
 <div>
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">WhatsApp</p>
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">WhatsApp</p>
 <p class="font-body-md font-medium text-primary">+92 307 4743714</p>
 </div>
 </a>
@@ -307,7 +343,7 @@
 <span class="material-symbols-outlined">mail</span>
 </div>
 <div>
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">Email</p>
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Email</p>
 <p class="font-body-md font-medium text-primary">shahzaibrafique671@gmail.com</p>
 </div>
 </a>
@@ -316,7 +352,7 @@
 <span class="material-symbols-outlined">location_on</span>
 </div>
 <div>
-<p class="font-label-caps text-label-caps uppercase text-outline mb-1">Location</p>
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-1">Location</p>
 <p class="font-body-md font-medium text-primary">Lahore / Kasur, Punjab, Pakistan</p>
 </div>
 </div>
@@ -327,15 +363,15 @@
 <form id="contact-form" class="space-y-6">
 <div>
 <label class="sr-only" for="name">Name</label>
-<input class="w-full bg-transparent border-0 border-b-2 border-outline-variant/50 px-0 py-3 font-body-md text-primary focus:ring-0 focus:border-primary transition-colors placeholder:text-on-surface-variant/50" id="name" placeholder="Your Name" type="text" required/>
+<input class="w-full bg-transparent border-0 border-b-2 border-outline-variant/50 px-0 py-3 font-body-md text-primary focus:border-primary focus-visible:ring-2 focus-visible:ring-secondary focus:outline-none transition-colors placeholder:text-on-surface-variant/50" id="name" placeholder="Your Name" type="text" required/>
 </div>
 <div>
 <label class="sr-only" for="email">Email</label>
-<input class="w-full bg-transparent border-0 border-b-2 border-outline-variant/50 px-0 py-3 font-body-md text-primary focus:ring-0 focus:border-primary transition-colors placeholder:text-on-surface-variant/50" id="email" placeholder="Email Address" type="email"/>
+<input class="w-full bg-transparent border-0 border-b-2 border-outline-variant/50 px-0 py-3 font-body-md text-primary focus:border-primary focus-visible:ring-2 focus-visible:ring-secondary focus:outline-none transition-colors placeholder:text-on-surface-variant/50" id="email" placeholder="Email Address" type="email"/>
 </div>
 <div>
 <label class="sr-only" for="message">Message</label>
-<textarea class="w-full bg-transparent border-0 border-b-2 border-outline-variant/50 px-0 py-3 font-body-md text-primary focus:ring-0 focus:border-primary transition-colors resize-none placeholder:text-on-surface-variant/50" id="message" placeholder="Tell me about your project..." rows="4" required></textarea>
+<textarea class="w-full bg-transparent border-0 border-b-2 border-outline-variant/50 px-0 py-3 font-body-md text-primary focus:border-primary focus-visible:ring-2 focus-visible:ring-secondary focus:outline-none transition-colors resize-none placeholder:text-on-surface-variant/50" id="message" placeholder="Tell me about your project..." rows="4" required></textarea>
 </div>
 <button class="bg-primary text-on-primary px-8 py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-inverse-surface transition-colors w-full inline-flex justify-center items-center gap-2" type="submit">
                                 Send via WhatsApp
@@ -381,6 +417,8 @@
             icon.textContent = open ? 'close' : 'menu';
             toggle.setAttribute('aria-expanded', String(open));
             toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            // inert removes the collapsed menu from tab order + a11y tree
+            menu.inert = !open;
         });
         // Close the menu after tapping a link
         menu.querySelectorAll('a').forEach(function (link) {
@@ -388,7 +426,20 @@
                 menu.classList.remove('open');
                 icon.textContent = 'menu';
                 toggle.setAttribute('aria-expanded', 'false');
+                toggle.setAttribute('aria-label', 'Open menu');
+                menu.inert = true;
             });
+        });
+        // Close on Escape and return focus to the toggle
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && menu.classList.contains('open')) {
+                menu.classList.remove('open');
+                icon.textContent = 'menu';
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.setAttribute('aria-label', 'Open menu');
+                menu.inert = true;
+                toggle.focus();
+            }
         });
     })();
 
