@@ -10,10 +10,12 @@ A fast, fully responsive, single-file static site. No build step, no dependencie
 
 ## Features
 
+- **Visual editor** — a WordPress/Framer-style editor (`editor.html`) to edit all text and images with a live preview; no code required
+- **Content-driven** — all text, images, and links live in `content.json`; the site reads from it on load
 - **Mobile-first responsive layout** — built with Tailwind utility classes, single `md:` breakpoint
 - **Accessible** — skip link, semantic landmarks, labelled sections, visible focus rings, `inert` mobile menu, `prefers-reduced-motion` support
 - **SEO-ready** — unique title & meta description, Open Graph + Twitter Card tags, canonical URL, and `Person` JSON-LD structured data
-- **No backend** — the contact form deep-links to WhatsApp with a pre-filled message
+- **No backend for the live site** — the contact form deep-links to WhatsApp with a pre-filled message
 
 ## Sections
 
@@ -41,21 +43,57 @@ python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
+## Editing content
+
+All content lives in **`content.json`**. There are two ways to edit it.
+
+### Option A — Visual editor (recommended)
+
+A WordPress-style editor with a live preview. It needs the bundled Node server (no `npm install` — Node's built-ins only).
+
+```bash
+node server.js
+# then open http://localhost:4321/editor.html
+```
+
+![Editor preview](editor-preview.png)
+
+- Edit any field on the left; changes **auto-save** to `content.json` and the preview refreshes.
+- Click **Upload image** to add a hero/about photo — it's saved into the folder and wired up automatically.
+- Add or remove services, "why" points, social links, and nav items with the **+ Add** / **✕** buttons.
+- **Export JSON** downloads a copy of `content.json` (handy for backups or static hosting).
+
+### Option B — Edit the JSON by hand
+
+Open `content.json` in any text editor and change the values. Then serve the site over http (the browser blocks `fetch()` of local files via `file://`):
+
+```bash
+python3 -m http.server 8000   # then visit http://localhost:8000
+```
+
+> If `content.json` can't be loaded, `index.html` falls back to its built-in default text, so the site never looks broken.
+
 ## Customization
 
 Before going live, replace the placeholder values:
 
 - `index.html` — set the real domain in the `og:url`, `canonical`, and JSON-LD `url` fields (currently `https://example.com/`)
 - `index.html` — replace the placeholder `og:image` / `twitter:image` with a hosted 1200×630 share image
-- `shahzaib.png` — swap in the final hero/about photo
+- Use the editor (or `content.json`) to set the final hero/about photo
+
+> **Hosting note:** the live site (`index.html` + `content.json`) is fully static and deploys anywhere (GitHub Pages, Netlify, Vercel). `server.js` and `editor.html` are **dev-only authoring tools** — you don't deploy them.
 
 ## Project Structure
 
 ```
 .
-├── index.html      # The entire site (markup, styles, scripts)
-├── shahzaib.png    # Hero & about portrait
-├── preview.png     # Screenshot used in this README
+├── index.html          # The live site (reads content.json)
+├── content.json        # All editable text, images, and links
+├── editor.html         # Visual editor (dev-only)
+├── server.js           # Tiny Node server powering the editor (dev-only)
+├── shahzaib.png        # Hero & about portrait
+├── preview.png         # Site screenshot (README)
+├── editor-preview.png  # Editor screenshot (README)
 └── readme.md
 ```
 
