@@ -2,15 +2,17 @@
  * Tiny zero-dependency dev server for the portfolio + visual editor.
  *
  *   node server.js
- *   → open http://localhost:4321/editor.html   to edit
- *   → open http://localhost:4321/index.html     to view the live site
+ *   → http://localhost:4321/index.html?edit=1   edit ON the page (inline)
+ *   → http://localhost:4321/editor.html         edit in a side-form (alternative)
+ *   → http://localhost:4321/index.html          the public site
  *
- * Endpoints used by editor.html:
+ * Endpoints used by both editors:
  *   GET  /content.json     read current content (also served as a static file)
  *   POST /api/save         body = full content JSON → overwrites content.json
  *   POST /api/upload       body = { filename, dataUrl } → saves an image to the folder
  *
  * No npm install needed — uses only Node's built-in modules.
+ * Change the port with:  PORT=4500 node server.js
  */
 const http = require('http');
 const fs = require('fs');
@@ -104,8 +106,16 @@ const server = http.createServer(async function (req, res) {
 });
 
 server.listen(PORT, function () {
-  console.log('\n  Portfolio editor running:');
-  console.log('  → Editor : http://localhost:' + PORT + '/editor.html');
-  console.log('  → Site   : http://localhost:' + PORT + '/index.html');
+  console.log('\n  Portfolio server running:');
+  console.log('  → Edit inline : http://localhost:' + PORT + '/index.html?edit=1');
+  console.log('  → Edit (form) : http://localhost:' + PORT + '/editor.html');
+  console.log('  → Public site : http://localhost:' + PORT + '/index.html');
   console.log('\n  Press Ctrl+C to stop.\n');
+}).on('error', function (err) {
+  if (err.code === 'EADDRINUSE') {
+    console.error('\n  Port ' + PORT + ' is already in use.');
+    console.error('  Start on another port, e.g.:  PORT=4500 node server.js\n');
+    process.exit(1);
+  }
+  throw err;
 });

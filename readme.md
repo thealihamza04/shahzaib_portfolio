@@ -45,31 +45,33 @@ python3 -m http.server 8000
 
 ## Editing content
 
-All content lives in **`content.json`**. There are two ways to edit it.
-
-### Option A — Visual editor (recommended)
-
-A WordPress-style editor with a live preview. It needs the bundled Node server (no `npm install` — Node's built-ins only).
+All content lives in **`content.json`**. Start the bundled Node server first (no `npm install` — Node's built-ins only):
 
 ```bash
 node server.js
-# then open http://localhost:4321/editor.html
+# (port 4321 in use? run:  PORT=4500 node server.js)
 ```
+
+There are three ways to edit, all auto-saving to `content.json`.
+
+### Option A — Edit directly on the page (recommended)
+
+Open **http://localhost:4321/index.html?edit=1**
+
+- **Click any text** on the site to edit it in place; click away to save.
+- **Click any image** (hero / about) to upload a replacement — it's saved into the folder and wired up automatically.
+- Hover a service card or "why" point to reveal a **✕** to remove it; use **+ Add** to add one.
+- A toolbar at the bottom shows the save status. The public site (`index.html`, no `?edit=1`) shows none of this.
+
+### Option B — Side-form editor
+
+Open **http://localhost:4321/editor.html** — a form panel with a live preview. Best for editing the **social links** and **nav items** (which the inline editor leaves alone), and for reordering. Includes an **Export JSON** button for backups.
 
 ![Editor preview](editor-preview.png)
 
-- Edit any field on the left; changes **auto-save** to `content.json` and the preview refreshes.
-- Click **Upload image** to add a hero/about photo — it's saved into the folder and wired up automatically.
-- Add or remove services, "why" points, social links, and nav items with the **+ Add** / **✕** buttons.
-- **Export JSON** downloads a copy of `content.json` (handy for backups or static hosting).
+### Option C — Edit the JSON by hand
 
-### Option B — Edit the JSON by hand
-
-Open `content.json` in any text editor and change the values. Then serve the site over http (the browser blocks `fetch()` of local files via `file://`):
-
-```bash
-python3 -m http.server 8000   # then visit http://localhost:8000
-```
+Open `content.json` in any text editor, change values, and reload. (Must be served over http — browsers block `fetch()` of `file://`.)
 
 > If `content.json` can't be loaded, `index.html` falls back to its built-in default text, so the site never looks broken.
 

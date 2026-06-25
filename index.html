@@ -184,6 +184,57 @@
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
         }
+
+        /* ===== Inline editor (only active under .edit-mode) ===== */
+        .edit-mode .inline-editable {
+            outline: 1px dashed transparent;
+            outline-offset: 3px;
+            border-radius: 3px;
+            cursor: text;
+            transition: outline-color .15s, background-color .15s;
+        }
+        .edit-mode .inline-editable:hover { outline-color: #2170e4; background: rgba(33,112,228,.06); }
+        .edit-mode .inline-editing,
+        .edit-mode .inline-editable:focus {
+            outline: 2px solid #0058be !important;
+            background: rgba(33,112,228,.08);
+        }
+        .edit-mode .inline-editable-img { cursor: pointer; transition: filter .15s, box-shadow .15s; }
+        .edit-mode .inline-editable-img:hover { filter: brightness(.9); box-shadow: 0 0 0 3px #0058be; }
+        /* Contact-form fields are locked while editing the page */
+        .edit-mode .edit-disabled { cursor: not-allowed; opacity: .65; }
+
+        .edit-mode .edit-del {
+            position: absolute; top: 6px; right: 6px; z-index: 30;
+            width: 22px; height: 22px; line-height: 20px; text-align: center;
+            border-radius: 9999px; border: 1px solid #fecaca; background: #fff; color: #dc2626;
+            font-size: 12px; cursor: pointer; opacity: 0; transition: opacity .15s;
+        }
+        .edit-mode .relative:hover > .edit-del { opacity: 1; }
+        .edit-mode .edit-del:hover { background: #fee2e2; }
+        .edit-mode .edit-add {
+            display: inline-flex; align-items: center; justify-content: center;
+            margin-top: 16px; padding: 8px 14px; width: 100%;
+            border: 1px dashed #93b4e6; border-radius: 8px;
+            color: #0058be; background: #fff; font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: .08em; cursor: pointer;
+            transition: background .15s, border-color .15s;
+        }
+        .edit-mode .edit-add:hover { background: #eff4ff; border-color: #0058be; }
+
+        #edit-toolbar {
+            position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+            z-index: 100; display: flex; align-items: center; gap: 10px;
+            background: #0b1c30; color: #e2e8f0; padding: 9px 16px; border-radius: 9999px;
+            font-family: Inter, system-ui, sans-serif; font-size: 13px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.25);
+        }
+        #edit-toolbar .dot { width: 8px; height: 8px; border-radius: 9999px; background: #86efac; }
+        #edit-toolbar .sep { width: 1px; height: 16px; background: #334155; }
+        #edit-toolbar .hint { color: #94a3b8; }
+        #edit-toolbar #edit-view { color: #93c5fd; text-decoration: none; font-weight: 600; }
+        #edit-toolbar #edit-view:hover { text-decoration: underline; }
+        @media (max-width: 640px) { #edit-toolbar .hint { display: none; } }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container">
@@ -508,11 +559,17 @@
                     '</div>'
                 );
             }).join('');
-            // fill text via DOM (avoids HTML-injection from the JSON)
+            // fill text via DOM (avoids HTML-injection from the JSON) and tag
+            // each field with its array path so the inline editor can bind to it.
             grid.querySelectorAll(':scope > div').forEach(function (card, i) {
-                card.querySelector('.material-symbols-outlined').textContent = services[i].icon || '';
-                card.querySelector('h3').textContent = services[i].title || '';
-                card.querySelector('p').textContent = services[i].description || '';
+                const icon = card.querySelector('.material-symbols-outlined');
+                const h3 = card.querySelector('h3');
+                const p = card.querySelector('p');
+                icon.textContent = services[i].icon || '';
+                h3.textContent = services[i].title || '';
+                p.textContent = services[i].description || '';
+                h3.setAttribute('data-content', 'services.items.' + i + '.title');
+                p.setAttribute('data-content', 'services.items.' + i + '.description');
             });
         }
 
@@ -528,7 +585,10 @@
                     '</li>'
                 );
             }).join('');
-            ul.querySelectorAll('span').forEach(function (span, i) { span.textContent = why[i]; });
+            ul.querySelectorAll('span').forEach(function (span, i) {
+                span.textContent = why[i];
+                span.setAttribute('data-content', 'about.whyPoints.' + i);
+            });
         }
 
         // 7. Social links (match by data-network, so SVG icons stay intact)
@@ -543,10 +603,210 @@
 
     fetch('content.json', { cache: 'no-store' })
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        .then(applyContent)
+        .then(function (data) {
+            applyContent(data);
+            if (EDIT_MODE) initInlineEditor();
+        })
         .catch(function (err) {
             console.warn('content.json not loaded — using built-in defaults.', err);
+            if (EDIT_MODE) {
+                document.getElementById('edit-status') &&
+                    (document.getElementById('edit-status').textContent = '⚠ content.json not loaded');
+            }
         });
+
+    // ================= INLINE EDITOR (only when ?edit=1) =================
+    // Click any text on the page to edit it; click any image to swap it.
+    // Changes auto-save to content.json through server.js. The public site
+    // (index.html with no ?edit=1) never loads any of this.
+    const EDIT_MODE = new URLSearchParams(location.search).has('edit');
+
+    function setPath(obj, path, value) {
+        const keys = path.split('.');
+        let o = obj;
+        for (let i = 0; i < keys.length - 1; i++) {
+            const k = /^\d+$/.test(keys[i]) ? Number(keys[i]) : keys[i];
+            o = o[k];
+        }
+        const last = keys[keys.length - 1];
+        o[/^\d+$/.test(last) ? Number(last) : last] = value;
+    }
+
+    let saveTimer = null;
+    function editStatus(text, color) {
+        const el = document.getElementById('edit-status');
+        if (el) { el.textContent = text; el.style.color = color || '#cbd5e1'; }
+    }
+    function queueSave() {
+        editStatus('Editing…', '#cbd5e1');
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveNow, 500);
+    }
+    function saveNow() {
+        editStatus('Saving…', '#93c5fd');
+        return fetch('/api/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(SITE),
+        }).then(function (r) {
+            if (!r.ok) throw new Error('save failed');
+            editStatus('✓ Saved', '#86efac');
+        }).catch(function () {
+            editStatus('⚠ Save failed — run `node server.js`', '#fca5a5');
+        });
+    }
+
+    function rerender() {
+        applyContent(SITE);   // rebuild lists/cards from the updated object
+        attachEditing();      // re-wire editing onto the fresh DOM
+    }
+
+    // Make every [data-content] element editable in place.
+    function attachEditing() {
+        document.querySelectorAll('[data-content]').forEach(function (el) {
+            if (el.dataset.editBound) return;
+            el.dataset.editBound = '1';
+            el.setAttribute('contenteditable', 'plaintext-only');
+            el.classList.add('inline-editable');
+            el.addEventListener('focus', function () { el.classList.add('inline-editing'); });
+            el.addEventListener('blur', function () {
+                el.classList.remove('inline-editing');
+                const val = el.textContent.trim();
+                if (get(SITE, el.getAttribute('data-content')) !== val) {
+                    setPath(SITE, el.getAttribute('data-content'), val);
+                    queueSave();
+                }
+            });
+            // Enter commits (no newlines) except in the long body fields
+            el.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && !el.matches('[data-multiline]')) { e.preventDefault(); el.blur(); }
+            });
+        });
+
+        // Images: click to upload a replacement.
+        document.querySelectorAll('[data-img]').forEach(function (img) {
+            if (img.dataset.editBound) return;
+            img.dataset.editBound = '1';
+            img.classList.add('inline-editable-img');
+            img.title = 'Click to replace image';
+            img.addEventListener('click', function (e) {
+                e.preventDefault();
+                pickImage(img.getAttribute('data-img'));
+            });
+        });
+
+        // Repeatable controls — services + "why" points (the lists users edit often).
+        // Social links and nav are managed in the form editor (editor.html), since
+        // they involve fixed SVG icons / very short label sets.
+        addListControls('[data-services]', 'services.items',
+            { icon: 'star', title: 'New service', description: 'Describe this service.' });
+        addListControls('[data-why]', 'about.whyPoints', 'New reason');
+    }
+
+    // Adds a "+ Add" button + per-item "✕" delete buttons to a repeatable list.
+    // applyContent() rebuilds these lists' innerHTML, so the controls (and the
+    // listBound flag) are wiped on each rerender and freshly re-added here.
+    function addListControls(containerSel, path, blank) {
+        const container = document.querySelector(containerSel);
+        if (!container || container.dataset.listBound) return;
+        container.dataset.listBound = '1';
+
+        // per-item delete buttons (direct element children = the list items)
+        Array.prototype.forEach.call(container.children, function (item, i) {
+            item.classList.add('relative');
+            const del = document.createElement('button');
+            del.type = 'button';
+            del.className = 'edit-del';
+            del.textContent = '✕';
+            del.title = 'Remove';
+            del.addEventListener('click', function (e) {
+                e.preventDefault();
+                get(SITE, path).splice(i, 1);
+                queueSave();
+                rerender();
+            });
+            item.appendChild(del);
+        });
+
+        // add button
+        const add = document.createElement('button');
+        add.type = 'button';
+        add.className = 'edit-add';
+        add.textContent = '+ Add';
+        add.addEventListener('click', function (e) {
+            e.preventDefault();
+            get(SITE, path).push(JSON.parse(JSON.stringify(blank)));
+            queueSave();
+            rerender();
+        });
+        container.appendChild(add);
+    }
+
+    // Upload an image and point a content path at the saved filename.
+    function pickImage(path) {
+        const file = document.createElement('input');
+        file.type = 'file';
+        file.accept = 'image/*';
+        file.addEventListener('change', function () {
+            const f = file.files[0];
+            if (!f) return;
+            editStatus('Uploading…', '#93c5fd');
+            const fr = new FileReader();
+            fr.onload = function () {
+                fetch('/api/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: f.name, dataUrl: fr.result }),
+                }).then(function (r) { return r.json(); }).then(function (out) {
+                    if (!out.ok) throw new Error(out.error || 'upload failed');
+                    setPath(SITE, path, out.filename);
+                    queueSave();
+                    rerender();
+                }).catch(function () { editStatus('⚠ Upload failed', '#fca5a5'); });
+            };
+            fr.readAsDataURL(f);
+        });
+        file.click();
+    }
+
+    function initInlineEditor() {
+        document.documentElement.classList.add('edit-mode');
+        // long-text fields allow line breaks
+        ['hero.tagline', 'hero.description', 'about.lead', 'about.body',
+         'services.subheading', 'contact.subheading'].forEach(function (p) {
+            const el = document.querySelector('[data-content="' + p + '"]');
+            if (el) el.setAttribute('data-multiline', '1');
+        });
+        // While editing, don't let links navigate away or the form submit.
+        document.addEventListener('click', function (e) {
+            const a = e.target.closest('a[href]');
+            if (a && !a.id) { e.preventDefault(); }   // allow toolbar's own links (they have ids)
+        }, true);
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function (e) { e.preventDefault(); }, true);
+            // Disable the form fields while editing — you're editing the page, not filling it out.
+            contactForm.querySelectorAll('input, textarea, button').forEach(function (f) {
+                f.disabled = true;
+                f.classList.add('edit-disabled');
+            });
+        }
+        buildToolbar();
+        attachEditing();
+    }
+
+    function buildToolbar() {
+        const bar = document.createElement('div');
+        bar.id = 'edit-toolbar';
+        bar.innerHTML =
+            '<span class="dot"></span>' +
+            '<span id="edit-status">✓ Edit mode</span>' +
+            '<span class="sep"></span>' +
+            '<span class="hint">Click any text or image to edit</span>' +
+            '<a id="edit-view" href="index.html" target="_blank">View site ↗</a>';
+        document.body.appendChild(bar);
+        editStatus('✓ Edit mode', '#86efac');
+    }
 
     // ---- Mobile menu toggle ----
     (function () {

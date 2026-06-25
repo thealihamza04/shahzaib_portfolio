@@ -30,11 +30,12 @@
   <header class="flex items-center justify-between gap-4 px-5 h-14 bg-white border-b border-slate-200 shrink-0">
     <div class="flex items-center gap-3">
       <span class="font-bold tracking-tight text-[#0058be]">Portfolio&nbsp;Editor</span>
-      <span class="hidden sm:inline text-xs text-slate-400">edits save to content.json automatically</span>
+      <span class="hidden sm:inline text-xs text-slate-400">form editor — edits save to content.json automatically</span>
     </div>
     <div class="flex items-center gap-3">
       <span id="status" class="text-xs text-slate-400">Loading…</span>
-      <a href="index.html" target="_blank" class="text-xs font-medium text-[#0058be] hover:underline">Open site ↗</a>
+      <a href="index.html?edit=1" target="_blank" class="text-xs font-medium text-[#0058be] hover:underline">Edit on page ↗</a>
+      <a href="index.html" target="_blank" class="text-xs font-medium text-[#0058be] hover:underline">View site ↗</a>
       <button id="export-btn" class="text-xs font-medium px-3 py-1.5 rounded-md border border-slate-300 hover:bg-slate-50">Export JSON</button>
     </div>
   </header>
