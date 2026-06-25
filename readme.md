@@ -2,16 +2,16 @@
 
 A single-page portfolio for **Shahzaib Rafique**, a creative marketer and visual storyteller based in Lahore, Pakistan — specializing in product photography, social media marketing, and videography.
 
-![Portfolio preview](preview.png)
+![Portfolio preview](docs/preview.png)
 
 ## Overview
 
-A fast, fully responsive, single-file static site. No build step, no dependencies to install — just open it in a browser. The contact form opens WhatsApp with the message pre-filled, so the site works without a backend.
+A fast, fully responsive static site (everything in `public/`). No build step and no dependencies to install. The contact form opens WhatsApp with the message pre-filled, so the live site works without a backend.
 
 ## Features
 
-- **Visual editor** — a WordPress/Framer-style editor (`editor.html`) to edit all text and images with a live preview; no code required
-- **Content-driven** — all text, images, and links live in `content.json`; the site reads from it on load
+- **Inline visual editing** — edit text, images, services, social links & nav right on the page (`?edit=1`), Framer-style; no code required
+- **Content-driven** — all text, images, and links live in `public/content.json`; the site reads from it on load
 - **Mobile-first responsive layout** — built with Tailwind utility classes, single `md:` breakpoint
 - **Accessible** — skip link, semantic landmarks, labelled sections, visible focus rings, `inert` mobile menu, `prefers-reduced-motion` support
 - **SEO-ready** — unique title & meta description, Open Graph + Twitter Card tags, canonical URL, and `Person` JSON-LD structured data
@@ -35,43 +35,44 @@ A fast, fully responsive, single-file static site. No build step, no dependencie
 
 ## Getting Started
 
-The site is a single `index.html` file. Open it directly, or serve it locally:
+The deployable site is the **`public/`** folder. Serve it locally:
 
 ```bash
-# Python
-python3 -m http.server 8000
+# Node (recommended — also powers the editor)
+node tools/server.js
+# then visit http://localhost:4321/index.html
+
+# …or any static server, pointed at public/
+python3 -m http.server 8000 --directory public
 # then visit http://localhost:8000
 ```
 
 ## Editing content
 
-All content lives in **`content.json`**. Start the bundled Node server first (no `npm install` — Node's built-ins only):
+All content lives in **`public/content.json`**. Start the bundled Node server first (no `npm install` — Node's built-ins only):
 
 ```bash
-node server.js
-# (port 4321 in use? run:  PORT=4500 node server.js)
+node tools/server.js
+# (port 4321 in use? run:  PORT=4500 node tools/server.js)
 ```
 
-There are three ways to edit, all auto-saving to `content.json`.
+There are two ways to edit, both auto-saving to `public/content.json`.
 
 ### Option A — Edit directly on the page (recommended)
 
 Open **http://localhost:4321/index.html?edit=1**
 
 - **Click any text** on the site to edit it in place; click away to save.
-- **Click any image** (hero / about) to upload a replacement — it's saved into the folder and wired up automatically.
-- Hover a service card or "why" point to reveal a **✕** to remove it; use **+ Add** to add one.
-- A toolbar at the bottom shows the save status. The public site (`index.html`, no `?edit=1`) shows none of this.
+- **Click any image** (hero / about) to upload a replacement — it's saved into `public/assets/` and wired up automatically.
+- Hover a **service card** or **"why" point** to reveal a **✕** to remove it; use **+ Add** to add one.
+- **Nav labels** are editable in place; **social links** can be clicked to set their network + URL, with **+ Add** / **✕** to manage them.
+- A toolbar at the bottom shows the save status. The public site (`index.html`, no `?edit=1`) shows none of this — the contact form is also locked while editing.
 
-### Option B — Side-form editor
+![Inline editing](docs/edit-preview.png)
 
-Open **http://localhost:4321/editor.html** — a form panel with a live preview. Best for editing the **social links** and **nav items** (which the inline editor leaves alone), and for reordering. Includes an **Export JSON** button for backups.
+### Option B — Edit the JSON by hand
 
-![Editor preview](editor-preview.png)
-
-### Option C — Edit the JSON by hand
-
-Open `content.json` in any text editor, change values, and reload. (Must be served over http — browsers block `fetch()` of `file://`.)
+Open `public/content.json` in any text editor, change values, and reload. (Must be served over http — browsers block `fetch()` of `file://`.)
 
 > If `content.json` can't be loaded, `index.html` falls back to its built-in default text, so the site never looks broken.
 
@@ -79,23 +80,26 @@ Open `content.json` in any text editor, change values, and reload. (Must be serv
 
 Before going live, replace the placeholder values:
 
-- `index.html` — set the real domain in the `og:url`, `canonical`, and JSON-LD `url` fields (currently `https://example.com/`)
-- `index.html` — replace the placeholder `og:image` / `twitter:image` with a hosted 1200×630 share image
-- Use the editor (or `content.json`) to set the final hero/about photo
+- `public/index.html` — set the real domain in the `og:url`, `canonical`, and JSON-LD `url` fields (currently `https://example.com/`)
+- `public/index.html` — replace the placeholder `og:image` / `twitter:image` with a hosted 1200×630 share image
+- Use the editor (or `public/content.json`) to set the final hero/about photo
 
-> **Hosting note:** the live site (`index.html` + `content.json`) is fully static and deploys anywhere (GitHub Pages, Netlify, Vercel). `server.js` and `editor.html` are **dev-only authoring tools** — you don't deploy them.
+> **Hosting note:** deploy the **`public/`** folder — it's fully static and works anywhere (GitHub Pages, Netlify, Vercel). The `tools/` folder (`server.js`) holds the **dev-only editor server** — you don't deploy it.
 
 ## Project Structure
 
 ```
 .
-├── index.html          # The live site (reads content.json)
-├── content.json        # All editable text, images, and links
-├── editor.html         # Visual editor (dev-only)
-├── server.js           # Tiny Node server powering the editor (dev-only)
-├── shahzaib.png        # Hero & about portrait
-├── preview.png         # Site screenshot (README)
-├── editor-preview.png  # Editor screenshot (README)
+├── public/                 # ← deploy THIS folder (the live site)
+│   ├── index.html          #   the site + inline editor (reads content.json)
+│   ├── content.json        #   all editable text, images, and links
+│   └── assets/
+│       └── shahzaib.png    #   hero & about portrait (+ uploads land here)
+├── tools/                  # dev-only (not deployed)
+│   └── server.js           #   tiny Node server (powers ?edit=1 save + upload)
+├── docs/                   # screenshots used in this README
+│   ├── preview.png
+│   └── edit-preview.png
 └── readme.md
 ```
 

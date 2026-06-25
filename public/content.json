@@ -30,7 +30,7 @@
     "description": "Helping brands look good and sell more through conversion-focused visual content. Based in Lahore, Pakistan.",
     "primaryCtaLabel": "Message on WhatsApp",
     "secondaryCtaLabel": "see what I Offer",
-    "image": "shahzaib.png",
+    "image": "assets/shahzaib.png",
     "imageAlt": "Shahzaib Rafique, creative marketer and photographer at work"
   },
   "services": {
@@ -51,11 +51,6 @@
         "icon": "videocam",
         "title": "Videography",
         "description": "Engaging short-form video content, Instagram Reels, TikToks, and dynamic product showcase videos."
-      },
-      {
-        "icon": "star",
-        "title": "",
-        "description": ""
       }
     ]
   },
@@ -63,7 +58,7 @@
     "heading": "About Me",
     "lead": "Creative marketer blending marketing strategy with visual craft — a BBA Marketing student at the University of Central Punjab (UCP).",
     "body": "I believe great visuals shouldn't just look pretty — they need to perform. My approach combines an editorial eye with marketing fundamentals like consumer behaviour and brand strategy to create content that stops thumbs and drives conversions.",
-    "image": "shahzaib.png",
+    "image": "assets/shahzaib.png",
     "imageAlt": "Portrait of Shahzaib Rafique holding a camera",
     "whyTitle": "Why Work With Me",
     "whyPoints": [
