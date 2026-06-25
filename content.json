@@ -1,0 +1,84 @@
+{
+  "_comment": "Edit this file to update the portfolio. Text, images, and links below are read by index.html on page load. After editing, just reload the page (the site must be served over http — e.g. `python3 -m http.server`).",
+
+  "meta": {
+    "siteName": "Shahzaib Rafique",
+    "phoneIntl": "923074743714",
+    "email": "shahzaibrafique671@gmail.com"
+  },
+
+  "nav": {
+    "links": [
+      { "label": "Services", "href": "#services" },
+      { "label": "About", "href": "#about" },
+      { "label": "Contact", "href": "#contact" }
+    ],
+    "ctaLabel": "Hire Me"
+  },
+
+  "hero": {
+    "badge": "Available for freelance",
+    "headingLead": "Shahzaib Rafique:",
+    "headingAccent": "Visual Storyteller & Creative Marketer",
+    "tagline": "Product Photography · Social Media Marketing · Videography",
+    "description": "Helping brands look good and sell more through conversion-focused visual content. Based in Lahore, Pakistan.",
+    "primaryCtaLabel": "Message on WhatsApp",
+    "secondaryCtaLabel": "See What I Offer",
+    "image": "shahzaib.png",
+    "imageAlt": "Shahzaib Rafique, creative marketer and photographer at work"
+  },
+
+  "services": {
+    "heading": "What I Do",
+    "subheading": "Strategic visual services designed to elevate your brand.",
+    "items": [
+      {
+        "icon": "photo_camera",
+        "title": "Product Photography",
+        "description": "Clean, conversion-focused shots tailored for e-commerce platforms and social media product features."
+      },
+      {
+        "icon": "campaign",
+        "title": "Social Media Marketing",
+        "description": "End-to-end content creation, strategy planning, and campaign management to build community and drive sales."
+      },
+      {
+        "icon": "videocam",
+        "title": "Videography",
+        "description": "Engaging short-form video content, Instagram Reels, TikToks, and dynamic product showcase videos."
+      }
+    ]
+  },
+
+  "about": {
+    "heading": "About Me",
+    "lead": "Creative marketer blending marketing strategy with visual craft — a BBA Marketing student at the University of Central Punjab (UCP).",
+    "body": "I believe great visuals shouldn't just look pretty — they need to perform. My approach combines an editorial eye with marketing fundamentals like consumer behaviour and brand strategy to create content that stops thumbs and drives conversions.",
+    "image": "shahzaib.png",
+    "imageAlt": "Portrait of Shahzaib Rafique holding a camera",
+    "whyTitle": "Why Work With Me",
+    "whyPoints": [
+      "Quick learner & adaptable to brand guidelines",
+      "Creative eye for engaging, trend-aware content",
+      "Reliable & deadline-driven execution",
+      "Strong communicator throughout the project lifecycle"
+    ]
+  },
+
+  "contact": {
+    "heading": "Let's Work Together",
+    "subheading": "Ready to elevate your brand's visual presence? Get in touch to discuss your next project.",
+    "whatsappLabel": "WhatsApp",
+    "whatsappValue": "+92 307 4743714",
+    "emailLabel": "Email",
+    "emailValue": "shahzaibrafique671@gmail.com",
+    "locationLabel": "Location",
+    "locationValue": "Lahore / Kasur, Punjab, Pakistan",
+    "submitLabel": "Send via WhatsApp"
+  },
+
+  "social": [
+    { "network": "Instagram", "href": "https://www.instagram.com/i_em_shahzaib_06" },
+    { "network": "LinkedIn", "href": "https://pk.linkedin.com/in/shahzaib-rafique-34303435b" }
+  ]
+}
